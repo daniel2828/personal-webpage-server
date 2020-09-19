@@ -8,7 +8,7 @@ function singUp(req, res) {
 
   user.name = name;
   user.lastname = lastName;
-  user.email = email;
+  user.email = email.toLowerCase();
   //Default values
   user.role = "admin";
   user.active = false;
