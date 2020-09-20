@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt-nodejs");
+const jwt = require("../servicios/jwt");
 const User = require("../models/user");
 
 function singUp(req, res) {
@@ -47,6 +48,39 @@ function singUp(req, res) {
   console.log("Endpoint de singUp");
 }
 
+function singIn(req, res) {
+  const params = req.body;
+  const email = params.email.toLowerCase();
+  const password = params.password;
+  // Find by email in mongo database
+  User.findOne({ email }, (err, userStored) => {
+    if (err) {
+      res.status(500).send({ message: "Error del servidor." });
+    } else if (!userStored) {
+      res.status(404).send({ message: "Email no encontrado." });
+    } else {
+      // Check password
+      bcrypt.compare(password, userStored.password, (err, check) => {
+        if (err) {
+          res.status(500).send({ message: "Error de servidor." });
+        } else if (!check) {
+          res.status(404).send({ message: "La contraseña no es correcta." });
+        } else if (!userStored.active) {
+          res
+            .status(200)
+            .send({ code: 200, message: "El usuario no está activo." });
+        } else {
+          res.status(200).send({
+            accessToken: jwt.createAccessToken(userStored),
+            refreshToken: jwt.createRefreshToken(userStored),
+          });
+        }
+      });
+    }
+  });
+  console.log(params);
+}
 module.exports = {
   singUp,
+  singIn,
 };
