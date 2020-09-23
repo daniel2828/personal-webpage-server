@@ -153,10 +153,46 @@ function uploadAvatar(req, res) {
     }
   });
 }
+
+function getAvatar(req, res) {
+  console.log(req);
+  const avatarName = req.params.avatarName;
+
+  const filePath = "./uploads/avatars/" + avatarName;
+  console.log(filePath);
+
+  fs.exists(filePath, (exists) => {
+    if (!exists) {
+      res.status(404).send({ message: "El avatar que buscas no existe" });
+    } else {
+      res.sendFile(path.resolve(filePath));
+    }
+  });
+}
+
+function updateUser(req, res) {
+  const userData = req.body;
+  const params = req.params;
+  User.findByIdAndUpdate({ _id: params.id }, userData, (err, userUpdate) => {
+    if (err) {
+      res.status(500).send({ message: "Error del servidor." });
+    } else {
+      if (!userUpdate) {
+        res
+          .status(404)
+          .send({ message: "No se ha encontrado nungún usuario." });
+      } else {
+        res.status(200).send({ message: "Usuario actualizado correctamente." });
+      }
+    }
+  });
+}
 module.exports = {
   singUp,
   singIn,
   getUsers,
   getUsersActive,
   uploadAvatar,
+  getAvatar,
+  updateUser,
 };
