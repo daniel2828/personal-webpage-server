@@ -1,4 +1,4 @@
-const menu = require("../models/menu");
+
 const Menu = require("../models/menu");
 
 function addMenu(req, res) { 
