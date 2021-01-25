@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const app = express();
 
 const { API_VERSION } = require("./config");
+
 // Load routings
 const authRoutes = require("./routers/auth");
 const userRoutes = require("./routers/user");
@@ -11,7 +12,8 @@ const menuRoutes = require("./routers/menu");
 const navigationRoutes = require("./routers/navigation");
 const newsletterRoutes = require("./routers/newsletter"); 
 const courseRoutes = require("./routers/course");
-const course = require("./controllers/course");
+//
+const postRoutes = require("./routers/post");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -38,4 +40,5 @@ app.use(`/api/${API_VERSION}`, menuRoutes);
 app.use(`/api/${API_VERSION}`, navigationRoutes)
 app.use(`/api/${API_VERSION}`, newsletterRoutes);
 app.use(`/api/${API_VERSION}`, courseRoutes);
+app.use(`/api/${API_VERSION}`, postRoutes);
 module.exports = app;
