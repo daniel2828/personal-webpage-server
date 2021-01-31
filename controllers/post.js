@@ -21,7 +21,7 @@ function addPost(req, res) {
     }
   });
 }
-
+//DOGE
 function getPosts(req, res) {
   const { page = 1, limit = 10 } = req.query;
 
