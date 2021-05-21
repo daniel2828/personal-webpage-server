@@ -4,7 +4,7 @@ function addPost(req, res) {
   //Get request body and create new post
   const body = req.body;
   const post = new Post(body);
-  
+  // Fix
   post.save((err, postStored) => {
     if (err) {
       res.status(500).send({ code: 500, message: "Error del servidor." });
